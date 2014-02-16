@@ -1,0 +1,26 @@
+{
+  "name": "double-up",
+  "version": "1.0.0",
+  "description": "A game of double or nothing",
+  "main": "app.js",
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmcclure/double-up.git"
+  },
+  "author": "Dave J. McClure",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dmcclure/double-up/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "~0.3.0"
+  },
+  "dependencies": {
+    "express": "~3.4.8",
+    "node-uuid": "~1.4.1"
+  }
+}
