@@ -1,7 +1,7 @@
 // Setup ==============================
-var uuid = require('node-uuid');
 var express = require('express');
 var app = express();
+var Game = require('./game');
 
 
 // Configuration ======================

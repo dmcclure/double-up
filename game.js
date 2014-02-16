@@ -1,3 +1,7 @@
+var Deck = require('./deck');
+var Card = require('./card');
+var uuid = require('node-uuid');
+
 /**
  * A class to represent a game of Double Up.
  * @constructor
@@ -105,3 +109,5 @@ Game.prototype.newRound = function() {
     // Return the game's new state
     return Game.getState(this);
 }
+
+module.exports = Game;
