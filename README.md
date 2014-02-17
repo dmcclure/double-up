@@ -25,7 +25,8 @@ Create a new game. The game's initial state will be returned like the following:
   "playerCard": "",
   "balance": 1,
   "roundInProgress": true
-}```
+}
+```
 
 *Attributes:*
 **id**: Unique ID of the new game
@@ -44,7 +45,8 @@ Retrieve the state of an existing game. For example:
   "playerCard": "",
   "balance": 1,
   "roundInProgress": true
-}```
+}
+```
 
 
 ### PUT /v1/game/<game id>
@@ -63,7 +65,8 @@ The request should be sent with a Content-Type of "application/json". The game's
   "playerCard": "JS",
   "balance": 2,
   "roundInProgress": false
-}```
+}
+```
 
 ### POST /v1/game/<game id>/round
 Start a new round in an existing game. The game's new state will be returned. For example:
