@@ -35,7 +35,7 @@ Create a new game. The game's initial state will be returned like the following:
 * **balance**: The player's current balance
 * **roundInProgress**: True if a round is currently in progress, false if the round is over
 
-### GET /v1/game/<game id>
+### GET /v1/game/{id}
 Retrieve the state of an existing game. For example:
 
 ```
@@ -49,7 +49,7 @@ Retrieve the state of an existing game. For example:
 ```
 
 
-### PUT /v1/game/<game id>
+### PUT /v1/game/{id}
 Play a game round that is in progress. The client should send a JSON object specifying which of the four face down cards the player chose. The card selected must be specified as either 0, 1, 2 or 3. For example:
 
 ```
@@ -68,7 +68,7 @@ The request should be sent with a Content-Type of "application/json". The game's
 }
 ```
 
-### POST /v1/game/<game id>/round
+### POST /v1/game/{id}/round
 Start a new round in an existing game. The game's new state will be returned. For example:
 
 ```
