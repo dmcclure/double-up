@@ -30,7 +30,6 @@ Create a new game. The game's initial state will be returned like the following:
 *Attributes:*
 * **id**: Unique ID of the new game
 * **dealerCard**: The card the dealer drew
-* **playerCard**: The card the player drew (this is empty until a player selects one of four cards)
 * **balance**: The player's current balance
 * **roundInProgress**: True if a round is currently in progress, false if the round is over
 
