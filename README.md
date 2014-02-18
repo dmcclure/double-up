@@ -22,7 +22,6 @@ Create a new game. The game's initial state will be returned like the following:
 {
   "id": "d52dce00-977a-11e3-82bf-ed14dd4e4a1b",
   "dealerCard": "9H",
-  "playerCard": "",
   "balance": 1,
   "roundInProgress": true
 }
@@ -42,7 +41,6 @@ Retrieve the state of an existing game. For example:
 {
   "id": "d52dce00-977a-11e3-82bf-ed14dd4e4a1b",
   "dealerCard": "9H",
-  "playerCard": "",
   "balance": 1,
   "roundInProgress": true
 }
@@ -56,17 +54,27 @@ Play a game round that is in progress. The client should send a JSON object spec
 {"cardSelected": 2}
 ```
 
-The request should be sent with a Content-Type of "application/json". The game's new state will be returned. For example:
+The request should be sent with a Content-Type of "application/json". The game's new state will be returned with two extra attributes. For example:
 
 ```
 {
   "id": "d52dce00-977a-11e3-82bf-ed14dd4e4a1b",
   "dealerCard": "9H",
-  "playerCard": "JS",
   "balance": 2,
-  "roundInProgress": false
-}
+  "roundInProgress": false,
+  "playerCardSelected": 2,
+  "playerCards": [
+    "3D",
+    "7H",
+    "JS",
+    "5S"
+  ]}
 ```
+
+*Additional attributes:*
+* **playerCards**: An array containing the four cards the player was dealt
+* **playerCardSelected**: Index of the card in the playerCards array the player selected
+
 
 ### POST /v1/game/{id}/round
 Start a new round in an existing game. The game's new state will be returned. For example:
@@ -75,7 +83,6 @@ Start a new round in an existing game. The game's new state will be returned. Fo
 {
   "id": "d52dce00-977a-11e3-82bf-ed14dd4e4a1b",
   "dealerCard": "QS",
-  "playerCard": "",
   "balance": 2,
   "roundInProgress": true
 }

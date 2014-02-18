@@ -23,7 +23,6 @@ function error(err, req, res, next) {
   console.error(err.stack);
 
   // Respond with 500 "Internal Server Error".
-    console.log(err);
   res.json(500, { error: err.message });
 }
 

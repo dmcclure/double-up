@@ -8,15 +8,16 @@ var uuid = require('node-uuid');
   * @param existingGame An object holding the parameters of an existing game. If not specified a new game will be created
 */
 function Game(existingGame) {
-    this.deck = new Deck();                    // The deck used by the game
-    this.deck.shuffle(5);                      // Give the deck a good shuffle
+    this.deck = new Deck();          // The deck used by the game
+    this.deck.shuffle(5);            // Give the deck a good shuffle
+    this.playerCards = [];           // This array will hold the four cards the player was dealt after they have selected a card
+    this.playerCardSelected = null;  // This will hold the index of the card in the playerCards array the player selected. It will be set after the player selects a card
 
     if (existingGame === undefined) {
         // Setup a new game
         this.id = uuid.v1();                       // Every game has a globally unique ID
         this.balance = 1;                          // Initialize the player's balance to 1 credit
         this.dealerCard = this.deck.drawCard();    // The card to beat!
-        this.playerCard = null;                      // The player hasn't selected a card yet
         this.roundInProgress = true;               // Start a new round automatically
     }
     else {
@@ -24,19 +25,37 @@ function Game(existingGame) {
         this.id = existingGame.id;
         this.balance = existingGame.balance;
         this.roundInProgress = existingGame.roundInProgress;
+        this.playerCardSelected = existingGame.playerCardSelected;
 
         // The existingGame.dealerCard variable is a string like '2D', '10S', 'AH' etc, so we need to extract the rank and suit
         this.dealerCard = new Card(existingGame.dealerCard.slice(0, -1), existingGame.dealerCard.slice(-1));
 
-        // Do the same for the player's card (if a card has been selected)
-        if (existingGame.playerCard) {
-            this.playerCard = new Card(existingGame.playerCard.slice(0, -1), existingGame.playerCard.slice(-1));
+        // Do the same for the player's cards
+        if (existingGame.playerCards) {
+            for (var i = 0; i < existingGame.playerCards.length; i++) {
+                this.playerCards[i] = new Card(existingGame.playerCards[i].slice(0, -1), existingGame.playerCards[i].slice(-1));
+            }
         }
     }
 }
 
 Game.getState = function(game) {
-    return { id: game.id, dealerCard: game.dealerCard.toString(), playerCard: (game.playerCard) ? game.playerCard.toString() : '', balance: game.balance, roundInProgress: game.roundInProgress };
+    var state = {
+        id: game.id,
+        dealerCard: game.dealerCard.toString(),
+        balance: game.balance,
+        roundInProgress: game.roundInProgress
+    };
+
+    if (game.playerCardSelected) {
+        state.playerCardSelected = game.playerCardSelected;
+        state.playerCards = [];
+        for (var i = 0; i < game.playerCards.length; i++) {
+            state.playerCards[i] = game.playerCards[i].toString();
+        }
+    };
+
+    return state;
 }
 
 /**
@@ -57,24 +76,23 @@ Game.prototype.selectCard = function(cardSelected) {
         throw new Error('The game is over. You need to create a new one');
     }
 
-    console.log('Dealer\'s card: ' + this.dealerCard.toString());
-
     // Shuffle the deck once more to ensure there is no cheating
     this.deck.shuffle(5);
 
+    // Record the index of the card the player picked
+    this.playerCardSelected = cardSelected;
+
     // Draw the four cards the player picked from
-    var playerCards = this.deck.drawCards(4);
-    console.log('Player cards: ' + playerCards.toString());
+    this.playerCards = this.deck.drawCards(4);
 
     // Obtain the card the player picked
-    this.playerCard = playerCards[cardSelected];
-    console.log('Player selected : ' + this.playerCard.toString());
+    var cardPicked = this.playerCards[cardSelected];
 
     // Now compare the player's card to the dealer's card
-    if (this.playerCard.beats(this.dealerCard)) {  // If the player's card is higher than the dealer's card, they won (lucky...)
+    if (cardPicked.beats(this.dealerCard)) {  // If the player's card is higher than the dealer's card, they won (lucky...)
         this.balance *= 2;
     }
-    else if (this.dealerCard.beats(this.playerCard)) {  // If the dealer's card is higher than the player's card, the player lost
+    else if (this.dealerCard.beats(cardPicked)) {  // If the dealer's card is higher than the player's card, the player lost
         this.balance = 0;  // Game over!
     }
     else {
@@ -103,7 +121,8 @@ Game.prototype.newRound = function() {
     // Shuffle the deck and select a card for the dealer
     this.deck.shuffle(5);
     this.dealerCard = this.deck.drawCard();
-    this.playerCard = null;
+    this.playerCards = [];
+    this.playerCardSelected = null;
     this.roundInProgress = true;
 
     // Return the game's new state
