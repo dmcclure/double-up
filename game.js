@@ -10,7 +10,7 @@ var uuid = require('node-uuid');
 function Game(existingGame) {
     this.deck = new Deck();          // The deck used by the game
     this.deck.shuffle(5);            // Give the deck a good shuffle
-    this.playerCards = [];           // This array will hold the four cards the player was dealt after they have selected a card
+    this.playerCards = [];           // This array will hold the three cards the player was dealt after they have selected a card
     this.playerCardSelected = null;  // This will hold the index of the card in the playerCards array the player selected. It will be set after the player selects a card
 
     if (existingGame === undefined) {
@@ -59,13 +59,13 @@ Game.getState = function(game) {
 }
 
 /**
- * Perform a play of the game by selecting one of the four face down cards, hoping to beat the dealer's card.
- * @param {number} cardSelected Zero-based index of the selected card. Must be between 0 and 3.
+ * Perform a play of the game by selecting one of the three face down cards, hoping to beat the dealer's card.
+ * @param {number} cardSelected Zero-based index of the selected card. Must be between 0 and 2.
  * @returns {object} The new state of the game with the dealer card removed and the player's selected card added
  */
 Game.prototype.selectCard = function(cardSelected) {
-    if (cardSelected < 0 || cardSelected > 3) {
-        throw new Error('cardSelected must be between 0 and 3');
+    if (cardSelected < 0 || cardSelected > 2) {
+        throw new Error('cardSelected must be between 0 and 2');
     }
 
     if (!this.roundInProgress) {
@@ -82,8 +82,8 @@ Game.prototype.selectCard = function(cardSelected) {
     // Record the index of the card the player picked
     this.playerCardSelected = cardSelected;
 
-    // Draw the four cards the player picked from
-    this.playerCards = this.deck.drawCards(4);
+    // Draw the three cards the player picked from
+    this.playerCards = this.deck.drawCards(3);
 
     // Obtain the card the player picked
     var cardPicked = this.playerCards[cardSelected];

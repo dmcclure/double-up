@@ -47,7 +47,7 @@ app.get('/v1/game/:id', function(req, res) {
     }
 });
 
-// Play an existing game that is in progress by selecting one of the four player cards
+// Play a game that's in progress by selecting one of the three player cards
 app.put('/v1/game/:id', function(req, res) {
     var gameState = req.session[req.params.id];
     if (!gameState) {

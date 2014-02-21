@@ -3,7 +3,7 @@ double-up
 
 A game of double or nothing. This Node.js application exposes a REST API to create and play a game of Double Up.
 
-The dealer draws a card and the player must select one of four face down cards hoping to beat the dealer.
+The dealer draws a card and the player must select one of three face down cards hoping to beat the dealer.
 
 If the player's card beats the dealer's card, their balance doubles.
 
@@ -47,7 +47,7 @@ Retrieve the state of an existing game. For example:
 
 
 ### PUT /v1/game/{id}
-Play a game round that is in progress. The client should send a JSON object specifying which of the four face down cards the player chose. The card selected must be specified as either 0, 1, 2 or 3. For example:
+Play a game round that is in progress. The client should send a JSON object specifying which of the three face down cards the player chose. The card selected must be specified as either 0, 1, 2 or 3. For example:
 
 ```
 {"cardSelected": 2}
@@ -65,13 +65,12 @@ The request should be sent with a Content-Type of "application/json". The game's
   "playerCards": [
     "3D",
     "7H",
-    "JS",
-    "5S"
+    "JS"
   ]}
 ```
 
 *Additional attributes:*
-* **playerCards**: An array containing the four cards the player was dealt
+* **playerCards**: An array containing the three cards the player was dealt
 * **playerCardSelected**: Index of the card in the playerCards array the player selected
 
 
