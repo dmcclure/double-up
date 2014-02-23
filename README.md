@@ -61,6 +61,7 @@ The request should be sent with a Content-Type of "application/json". The game's
   "dealerCard": "9H",
   "balance": 2,
   "roundInProgress": false,
+  "roundResult": 1,
   "playerCardSelected": 2,
   "playerCards": [
     "3D",
@@ -70,6 +71,7 @@ The request should be sent with a Content-Type of "application/json". The game's
 ```
 
 *Additional attributes:*
+* **roundResult**: 1 if player won; -1 if player lost; 0 if player and dealer drew (a "push")
 * **playerCards**: An array containing the three cards the player was dealt
 * **playerCardSelected**: Index of the card in the playerCards array the player selected
 

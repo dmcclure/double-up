@@ -12,6 +12,7 @@ function Game(existingGame) {
     this.deck.shuffle(5);            // Give the deck a good shuffle
     this.playerCards = [];           // This array will hold the three cards the player was dealt after they have selected a card
     this.playerCardSelected = null;  // This will hold the index of the card in the playerCards array the player selected. It will be set after the player selects a card
+    this.roundResult = null;         // 1 if player won; -1 if player lost; 0 if player and dealer drew (a "push")
 
     if (existingGame === undefined) {
         // Setup a new game
@@ -26,6 +27,7 @@ function Game(existingGame) {
         this.balance = existingGame.balance;
         this.roundInProgress = existingGame.roundInProgress;
         this.playerCardSelected = existingGame.playerCardSelected;
+        this.roundResult = existingGame.roundResult;
 
         // The existingGame.dealerCard variable is a string like '2D', '10S', 'AH' etc, so we need to extract the rank and suit
         this.dealerCard = new Card(existingGame.dealerCard.slice(0, -1), existingGame.dealerCard.slice(-1));
@@ -44,7 +46,8 @@ Game.getState = function(game) {
         id: game.id,
         dealerCard: game.dealerCard.toString(),
         balance: game.balance,
-        roundInProgress: game.roundInProgress
+        roundInProgress: game.roundInProgress,
+        roundResult: game.roundResult
     };
 
     if (game.playerCardSelected) {
@@ -91,12 +94,15 @@ Game.prototype.selectCard = function(cardSelected) {
     // Now compare the player's card to the dealer's card
     if (cardPicked.beats(this.dealerCard)) {  // If the player's card is higher than the dealer's card, they won (lucky...)
         this.balance *= 2;
+        this.roundResult = 1;
     }
     else if (this.dealerCard.beats(cardPicked)) {  // If the dealer's card is higher than the player's card, the player lost
         this.balance = 0;  // Game over!
+        this.roundResult = -1;
     }
     else {
         // The player's card matches the dealer's card, so it's a push
+        this.roundResult = 0;
     }
 
     this.roundInProgress = false;
